@@ -1,11 +1,124 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.pukekogames.airportdesigner">
 
-    <application android:allowBackup="true"
-                 android:label="@string/app_name"
-                 android:icon="@mipmap/ic_launcher"
-                 android:supportsRtl="true"
-                 android:theme="@style/AppTheme">
+    <application
+            android:allowBackup="true"
+            android:icon="@mipmap/airplane_a320"
+            android:label="@string/app_name"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+        <activity
+                android:name=".Activities.Game"
+                android:label="@string/app_name"
+                android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activities.AirlineListActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="landscape"
+                  android:theme="@style/DialogTheme">
+            <intent-filter>
+                <action android:name="com.pukekogames.airportdesigner.AIRLINEACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activities.DepotActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="landscape"
+                  android:theme="@style/DialogTheme">
+            <intent-filter>
+                <action android:name="com.pukekogames.airportdesigner.DEPOTACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activities.AirplaneBoardingActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="landscape"
+                  android:theme="@style/DialogTheme">
+            <intent-filter>
+                <action android:name="com.pukekogames.airportdesigner.AIRPLANEBOARDINGACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activities.AirplaneInfoActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="landscape"
+                  android:theme="@style/DialogTheme">
+            <intent-filter>
+                <action android:name="com.pukekogames.airportdesigner.AIRPLANEINFOACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activities.RoadListActivity"
+                  android:label="@string/RoadList_Title"
+                  android:screenOrientation="landscape"
+                  android:theme="@style/DialogTheme">
+            <intent-filter>
+                <action android:name="com.pukekogames.airportdesigner.ROADLISTACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
+        </activity>
+
+        <activity android:name=".Activities.DepotListActivity"
+                  android:label="@string/DepotList_Title"
+                  android:screenOrientation="landscape"
+                  android:theme="@style/DialogTheme">
+            <intent-filter>
+                <action android:name="com.pukekogames.airportdesigner.DEPOTLISTACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
+        </activity>
+
+        <activity android:name=".Activities.NextAirplaneListActivity"
+                  android:label="@string/NextAirplanesList_Title"
+                  android:screenOrientation="landscape"
+                  android:theme="@style/DialogTheme">
+            <intent-filter>
+                <action android:name="com.pukekogames.airportdesigner.AIRPLANELISTACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
+        </activity>
+
+        <activity android:name=".Activities.GraphActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="landscape"
+
+                  android:theme="@style/DialogTheme">
+            <intent-filter>
+                <action android:name="com.pukekogames.airportdesigner.GRAPHACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
+        </activity>
+
+        <activity android:name=".Activities.LoadAndSaveActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="landscape"
+                  android:theme="@style/DialogTheme">
+            <intent-filter>
+                <action android:name="com.pukekogames.airportdesigner.LOADSAVEACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
+        </activity>
+
+        <activity
+                android:name="layout.Loading"
+                android:label="@string/title_activity_loading">
+        </activity>
+
+        <activity
+                android:name="com.pukekogames.airportdesigner.Activities.ErrorActivity"
+                android:label="@string/app_name"
+                android:screenOrientation="portrait">
+        </activity>
 
     </application>
 

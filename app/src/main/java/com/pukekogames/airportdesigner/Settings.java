@@ -1,7 +1,7 @@
 package com.pukekogames.airportdesigner;
 
 import android.graphics.Color;
-import com.pukeko.airportmangerapp.Activities.Game;
+import com.pukekogames.airportdesigner.Activities.Game;
 
 /**
  * Created by Marko Rapka on 26.05.2016.
