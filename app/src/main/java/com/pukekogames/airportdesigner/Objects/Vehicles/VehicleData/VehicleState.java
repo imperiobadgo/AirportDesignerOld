@@ -7,6 +7,7 @@ public enum VehicleState {
     waiting(),
     depot(),
     drivingToGate(),
+    arrivedAtGate(),
     servicing(),
     drivingToDepot(),
 }

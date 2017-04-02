@@ -21,6 +21,7 @@ import com.pukekogames.airportdesigner.Objects.Roads.*;
 import com.pukekogames.airportdesigner.Objects.UIElements.Button;
 import com.pukekogames.airportdesigner.Objects.Vehicles.Airplane;
 import com.pukekogames.airportdesigner.Activities.Game;
+import com.pukekogames.airportdesigner.Objects.Vehicles.StreetVehicle;
 import com.pukekogames.airportdesigner.Rendering.*;
 
 import java.util.ArrayList;
@@ -542,11 +543,20 @@ public class Handler {
             canvas.drawText("CollisionDet: " + GameInstance.Settings().CollisionDetection, debugX, debugY + 75, paint);
             if (selected instanceof Airplane) {
                 Airplane plane = (Airplane) selected;
-                canvas.drawText("PlaneState: " + plane.getState().name(), debugX, debugY + 120, paint);
-                canvas.drawText("Holding Position: " + plane.isHoldPosition(), debugX, debugY + 140, paint);
+                canvas.drawText("PlaneState: " + plane.getState().name(), debugX, debugY + 100, paint);
+                canvas.drawText("Holding Position: " + plane.isHoldPosition(), debugX, debugY + 120, paint);
+            }else if (selected instanceof StreetVehicle){
+                StreetVehicle vehicle = (StreetVehicle) selected;
+                canvas.drawText("VehicleState: " + vehicle.getDriveState().name(), debugX, debugY + 100, paint);
+                canvas.drawText("ParkGateNr.: " + vehicle.parkgateNumber, debugX, debugY + 120, paint);
+                canvas.drawText("toTarget: " + vehicle.toTarget.Length(), debugX, debugY + 140, paint);
+
+                paint.setColor(Color.RED);
+                paint.setStyle(Paint.Style.STROKE);
+                paint.setStrokeWidth(5);
+                PointInt renderPoint = Render.getPositionForRender(vehicle.getTargetPoint().x, vehicle.getTargetPoint().y);
+                canvas.drawCircle(renderPoint.x, renderPoint.y, 10, paint);
             }
-            int nextAirplanes = GameInstance.Airport().getNextAirplanes().size();
-            canvas.drawText("NextAirplaneCount: " + nextAirplanes, debugX, debugY + 160, paint);
         }
     }
 

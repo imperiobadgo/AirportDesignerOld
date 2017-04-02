@@ -299,9 +299,17 @@ public class GameContent {
         addParkGate(38,41);
         addParkGate(39,42);
 
-        addStreet(7,40);
-        addStreet(40,41);
-        addStreet(41,42);
+        Street street1 = addStreet(7,40);
+        Street street2 = addStreet(40,41);
+        Street street3 = addStreet(41,42);
+
+        Terminal terminal1 = new Terminal(street1);
+        Terminal terminal2 = new Terminal(street2);
+        Terminal terminal3 = new Terminal(street3);
+
+        GameInstance.Airport().AddBuilding(terminal1);
+        GameInstance.Airport().AddBuilding(terminal2);
+        GameInstance.Airport().AddBuilding(terminal3);
 
 
         //taxiways

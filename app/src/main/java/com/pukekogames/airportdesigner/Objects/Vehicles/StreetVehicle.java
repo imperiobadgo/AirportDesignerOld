@@ -4,9 +4,11 @@ import com.pukekogames.airportdesigner.GameInstance.GameInstance;
 import com.pukekogames.airportdesigner.Helper.GameLogic.AirplaneServices;
 import com.pukekogames.airportdesigner.Helper.GameLogic.GameplayWarning;
 import com.pukekogames.airportdesigner.Helper.GameLogic.VehicleTask;
+import com.pukekogames.airportdesigner.Helper.Geometry.PointFloat;
 import com.pukekogames.airportdesigner.Helper.Pathfinding.Dijkstra;
 import com.pukekogames.airportdesigner.Objects.Buildings.Depot;
 import com.pukekogames.airportdesigner.Objects.RoadIntersection;
+import com.pukekogames.airportdesigner.Objects.Roads.ParkGate;
 import com.pukekogames.airportdesigner.Objects.Roads.Road;
 import com.pukekogames.airportdesigner.Objects.Vehicles.VehicleData.VehicleState;
 
@@ -24,6 +26,8 @@ public abstract class StreetVehicle extends Vehicle {
     VehicleTask task;
     int serviceTime;
     Depot homeDepot;
+    public boolean reachedParkGate;
+    public int parkgateNumber;
 
     StreetVehicle(float x, float y) {
         super(x, y);
@@ -52,7 +56,7 @@ public abstract class StreetVehicle extends Vehicle {
                 hasFailedToFoundPath = true;
             }
         }
-        if (hasFailedToFoundPath){
+        if (hasFailedToFoundPath) {
             warnings.add(GameplayWarning.cantFindPath);
             updateSearch();
         }
@@ -65,32 +69,20 @@ public abstract class StreetVehicle extends Vehicle {
             driveHome();
         }
         setDistanceToNextVehicle();
-//        double diffX = targetPoint.x - Align_X;
-//        double diffY = targetPoint.y - Align_Y;
-//        distanceToTarget = Math.sqrt((diffX * diffX) + (diffY * diffY));
 
+        if (reachedParkGate && driveState == VehicleState.arrivedAtGate) {
+            driveOnParkGate();
+            return;
+        }
         updateHeadingAndDistanceToTarget();
 
-//        float headingToTarget = getHeadingToTarget(currentRoad, diffX, diffY, performance.targetPointDistance);
-//
-//        float headingDifference = headingToTarget - heading;
-//        headingDifference = (headingDifference + 180) % 360 - 180;
-//        if (headingDifference < -180) headingDifference += 360;
-//
-//        if (Math.abs(headingDifference) > performance.turnRate) {
-//            if (headingDifference >= 0) {
-//                heading += performance.turnRate;
-//            } else {
-//                heading -= performance.turnRate;
-//            }
-//        }
 
         float headingDifference = getHeadingdifferenzToNextRoad();
 
         float distanceToCorner;
 
         float calcSpeed = speed;
-        if (calcSpeed < 8){
+        if (calcSpeed < 8) {
             calcSpeed = 8;
         }
 
@@ -102,7 +94,7 @@ public abstract class StreetVehicle extends Vehicle {
             distanceToCorner = calcSpeed * 50 + 50;
         }
 
-        if (pathfinding != null && toTarget.Length() < (Math.abs(distanceToCorner) * 1.1)){
+        if (pathfinding != null && toTarget.Length() < (Math.abs(distanceToCorner) * 1.1)) {
             //wait for pathfinding
             targetSpeed = 0;
             updateVelocity();
@@ -141,9 +133,17 @@ public abstract class StreetVehicle extends Vehicle {
                 } else {
                     if (serviceTime <= 0 && driveState == VehicleState.drivingToGate) {
                         if (getNextIntersection().equals(task.getParkIntersection())) {
+
+                            reachedParkGate = true;
+                            parkgateNumber = 1;
                             serviceTime = getServiceTime();
 
-                            driveState = VehicleState.servicing;
+                            driveState = VehicleState.arrivedAtGate;
+                            parkgateNumber = 2;
+                            ParkGate targetGate = task.getParkPosition();
+                            PointFloat target = targetGate.getCornerPosition(parkgateNumber);
+
+                            targetPoint.set(target.x, target.y);
                         } else {
                             driveHome();
                         }
@@ -163,6 +163,50 @@ public abstract class StreetVehicle extends Vehicle {
         updateVelocity();
         setPosition(Align_X, Align_Y);
 
+    }
+
+    void driveOnParkGate(){
+        if (task == null){
+            reachedParkGate = false;
+            driveHome();
+        }
+        ParkGate targetGate = task.getParkPosition();
+
+//        float diffX = targetGate.getCenterPosition().x - Align_X;
+//        float diffY = targetGate.getCenterPosition().y - Align_Y;
+
+        float diffX = Align_X - targetPoint.x;
+        float diffY = Align_Y - targetPoint.y;
+
+        toTarget.set(Align_X, Align_Y, targetPoint.x, targetPoint.y);
+
+        float headingDirect = (float) Math.toDegrees(Math.atan2(diffX, diffY)) % 360;
+
+        heading = headingDirect;
+        headingDirection.set(heading);
+
+//        updateToDirectHeading(headingDirect, false);
+
+//        Math.sqrt(diffX * diffX + diffY * diffY) > 1000 &&
+
+        if (toTarget.Length() < 200){
+            if (parkgateNumber == 4){
+                driveState = VehicleState.servicing;
+                parkgateNumber = 0;
+            }else{
+                parkgateNumber++;
+                PointFloat target = targetGate.getCornerPosition(parkgateNumber);
+
+                targetPoint.set(target.x, target.y);
+            }
+
+        }
+
+        targetSpeed = performance.maxSpeed / 2f;
+
+
+        updateVelocity();
+        setPosition(Align_X, Align_Y);
     }
 
     public void searchRoute(RoadIntersection nextIntersection) {
@@ -218,7 +262,7 @@ public abstract class StreetVehicle extends Vehicle {
         this.task = task;
     }
 
-    public void clearVehicle(){
+    public void clearVehicle() {
         if (task != null) {
             GameInstance.Airport().removeVehicleTask(task);
             task = null;
@@ -240,5 +284,9 @@ public abstract class StreetVehicle extends Vehicle {
 
     public void setDriveState(VehicleState state) {
         driveState = state;
+    }
+
+    public VehicleState getDriveState(){
+        return driveState;
     }
 }

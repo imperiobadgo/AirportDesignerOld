@@ -1,6 +1,8 @@
 package com.pukekogames.airportdesigner.Objects.Roads;
 
 import com.pukekogames.airportdesigner.Helper.GameLogic.AirplaneServices;
+import com.pukekogames.airportdesigner.Helper.Geometry.PointFloat;
+import com.pukekogames.airportdesigner.Helper.Geometry.Vector2D;
 import com.pukekogames.airportdesigner.Objects.Buildings.Building;
 import com.pukekogames.airportdesigner.Objects.Buildings.Terminal;
 import com.pukekogames.airportdesigner.Objects.Images;
@@ -62,6 +64,27 @@ public class ParkGate extends Road {
                 }
             }
 
+        }
+
+    }
+
+    public PointFloat getCornerPosition(int number){
+
+        Vector2D perp = new Vector2D(dirY * length, - dirX * length);
+        System.out.println("perp: " + perp.getX() + " " + perp.getY() + " length: " + perp.Length());
+        //perp.Normalize();
+
+        switch(number){
+            case 1:
+                return new PointFloat(endPos.x + perp.getX(), endPos.y + perp.getY());
+            case 2:
+                return new PointFloat(startPos.x + perp.getX(), startPos.y + perp.getY());
+            case 3:
+                return new PointFloat(startPos.x - perp.getX(), startPos.y - perp.getY());
+            case 4:
+                return new PointFloat(centerPos.x - perp.getX(), centerPos.y - perp.getY());
+            default:
+                return endPos;
         }
 
     }

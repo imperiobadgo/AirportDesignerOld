@@ -198,6 +198,9 @@ public class Airport implements Serializable {
         }
         removeEmptyRoadIntersections();
         //TODO: tell every vehicle that roads have changed!
+        for (Vehicle vehicleOnRoad : road.getVehiclesOnRoad()) {
+            vehicleOnRoad.setRoad(null);
+        }
         GameInstance.Settings().shouldUpdateRoadMap = true;
         ClearReferences();
     }

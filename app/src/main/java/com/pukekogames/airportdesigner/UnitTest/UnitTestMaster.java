@@ -6,8 +6,10 @@ package com.pukekogames.airportdesigner.UnitTest;
 public class UnitTestMaster {
 
     public static void main(String[] args){
-        PlannedArrivalTest.testPercentage();
-        TimeStempTest.RunTests();
+//        PlannedArrivalTest.testPercentage();
+//        TimeStempTest.RunTests();
+        HeadingTest.test();
+        HeadingTest.TestDirectHeading();
     }
 
 }

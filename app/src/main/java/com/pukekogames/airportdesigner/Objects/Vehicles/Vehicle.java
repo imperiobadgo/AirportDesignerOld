@@ -23,7 +23,7 @@ public abstract class Vehicle extends ClickableGameObject {
     PointFloat targetPoint;
     PointInt centerPos;
     Vector2D headingDirection;
-    Vector2D toTarget;
+    public Vector2D toTarget;
     float collisionRadius;
     float speed = 2f;
     float targetSpeed = 0f;
@@ -114,6 +114,10 @@ public abstract class Vehicle extends ClickableGameObject {
         float headingToTarget = getHeadingToTarget(currentRoad, toTarget.getX(), toTarget.getY(), performance.targetPointDistance);
 
 
+        return updateToDirectHeading(headingToTarget, continueHeading);
+    }
+
+    public float updateToDirectHeading(float headingToTarget, boolean continueHeading){
         float headingDifference = headingToTarget - heading;
         headingDifference = (headingDifference + 180) % 360 - 180;
         if (headingDifference < -180) headingDifference += 360;
@@ -311,7 +315,9 @@ public abstract class Vehicle extends ClickableGameObject {
     }
 
     public void setRoad(Road road) {
-        if (road == null) return;
+        if (road == null){
+            return;
+        }
         PointFloat startPoint = road.getStartPosition();
         PointFloat endPoint = road.getEndPosition();
         PointFloat ownPos = new PointFloat(Align_X, Align_Y);
