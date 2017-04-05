@@ -67,6 +67,7 @@ public abstract class StreetVehicle extends Vehicle {
             task.getAirplane().completedService(getService());
             GameInstance.Airport().removeVehicleTask(task);
             driveHome();
+            ignoreCollisionTime = 100;
         }
         setDistanceToNextVehicle();
 
@@ -135,11 +136,10 @@ public abstract class StreetVehicle extends Vehicle {
                         if (getNextIntersection().equals(task.getParkIntersection())) {
 
                             reachedParkGate = true;
-                            parkgateNumber = 1;
                             serviceTime = getServiceTime();
 
                             driveState = VehicleState.arrivedAtGate;
-                            parkgateNumber = 2;
+                            parkgateNumber = 1;
                             ParkGate targetGate = task.getParkPosition();
                             PointFloat target = targetGate.getCornerPosition(parkgateNumber);
 
@@ -155,6 +155,8 @@ public abstract class StreetVehicle extends Vehicle {
 
         if (driveState == VehicleState.drivingToGate || driveState == VehicleState.drivingToDepot) {
             targetSpeed = performance.maxSpeed;
+        } else if (driveState == VehicleState.arrivedAtGate) {
+            targetSpeed = performance.maxSpeed / 2;
         } else if (driveState == VehicleState.servicing || driveState == VehicleState.waiting) {
             targetSpeed = 0f;
         }
@@ -165,35 +167,40 @@ public abstract class StreetVehicle extends Vehicle {
 
     }
 
-    void driveOnParkGate(){
-        if (task == null){
+    void driveOnParkGate() {
+        if (task == null) {
             reachedParkGate = false;
             driveHome();
         }
         ParkGate targetGate = task.getParkPosition();
+        ignoreCollisionTime = 40;
 
 //        float diffX = targetGate.getCenterPosition().x - Align_X;
 //        float diffY = targetGate.getCenterPosition().y - Align_Y;
 
-        float diffX = Align_X - targetPoint.x;
-        float diffY = Align_Y - targetPoint.y;
 
         toTarget.set(Align_X, Align_Y, targetPoint.x, targetPoint.y);
+//
+//        float headingDirect = (float) Math.toDegrees(Math.atan2(diffX, diffY)) % 360;
+//
+//        heading = headingDirect;
+//        headingDirection.set(heading);
+        float headingToTarget = getHeadingToTarget(null, toTarget.getX(), toTarget.getY(), performance.targetPointDistance);
 
-        float headingDirect = (float) Math.toDegrees(Math.atan2(diffX, diffY)) % 360;
 
-        heading = headingDirect;
-        headingDirection.set(heading);
+        updateToDirectHeading(headingToTarget, false);
 
-//        updateToDirectHeading(headingDirect, false);
+        float headingShowLength = 600;
+        headingPoint.set((int) (Align_X + Math.cos(Math.toRadians(headingToTarget)) * headingShowLength), (int) (Align_Y + Math.sin(Math.toRadians(headingToTarget)) * headingShowLength));
 
 //        Math.sqrt(diffX * diffX + diffY * diffY) > 1000 &&
 
-        if (toTarget.Length() < 200){
-            if (parkgateNumber == 4){
+        if (toTarget.Length() < 200) {
+            if (parkgateNumber == 4) {
                 driveState = VehicleState.servicing;
                 parkgateNumber = 0;
-            }else{
+                speed = 0;
+            } else {
                 parkgateNumber++;
                 PointFloat target = targetGate.getCornerPosition(parkgateNumber);
 
@@ -204,7 +211,15 @@ public abstract class StreetVehicle extends Vehicle {
 
         targetSpeed = performance.maxSpeed / 2f;
 
+//        float diffX = targetPoint.x - Align_X;
+//        float diffY = targetPoint.y - Align_Y;
 
+//        double length = Math.sqrt(diffX * diffX + diffY * diffY);
+//        diffX /= length;
+//        diffY /= length;
+//
+//        Align_X += diffX * targetSpeed;
+//        Align_Y += diffY * targetSpeed;
         updateVelocity();
         setPosition(Align_X, Align_Y);
     }
@@ -286,7 +301,7 @@ public abstract class StreetVehicle extends Vehicle {
         driveState = state;
     }
 
-    public VehicleState getDriveState(){
+    public VehicleState getDriveState() {
         return driveState;
     }
 }

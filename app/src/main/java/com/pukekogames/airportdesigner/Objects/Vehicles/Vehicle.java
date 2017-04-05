@@ -412,12 +412,12 @@ public abstract class Vehicle extends ClickableGameObject {
 //            headingPoint = new Point((int) (Align_X + diffX * 0.8), (int) ( Align_Y + diffY * 0.8));
             float headingDirectToTarget = (float) Math.toDegrees(Math.atan2(diffY, diffX)) % 360;
             float headingShowLength = 200f;
-            headingPoint = new PointInt((int) (Align_X + Math.cos(Math.toRadians(headingDirectToTarget)) * headingShowLength), (int) (Align_Y + Math.sin(Math.toRadians(headingDirectToTarget)) * headingShowLength));
+            headingPoint.set((int) (Align_X + Math.cos(Math.toRadians(headingDirectToTarget)) * headingShowLength), (int) (Align_Y + Math.sin(Math.toRadians(headingDirectToTarget)) * headingShowLength));
             float headingDifferenceTarget = headingDirectToTarget - headingToTarget;
             headingDifferenceTarget = (headingDifferenceTarget + 180) % 360 - 180;
             if (Math.abs(headingDifferenceTarget + (-180)) < 10) headingDifferenceTarget = 180;
             if (headingDifferenceTarget < -180) headingDifferenceTarget += 360;
-            distanceToRoad += 2;//to prevend driving on when passed target
+            distanceToRoad += 2;//to prevent driving on when passed target
             float correction = (float) ((distanceToRoad * headingDifferenceTarget) / 90);
             if (correction > 90) {
                 correction = 90;

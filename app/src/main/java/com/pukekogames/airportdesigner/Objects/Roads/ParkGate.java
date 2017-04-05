@@ -70,17 +70,18 @@ public class ParkGate extends Road {
 
     public PointFloat getCornerPosition(int number){
 
-        Vector2D perp = new Vector2D(dirY * length, - dirX * length);
-        System.out.println("perp: " + perp.getX() + " " + perp.getY() + " length: " + perp.Length());
+        float factor = 2.5f;
+        Vector2D perp = new Vector2D(dirY * length / factor, - dirX * length / factor);
+//        System.out.println("perp: " + perp.getX() + " " + perp.getY() + " length: " + perp.Length() + " center: " + centerPos.x + " " + centerPos.y);
         //perp.Normalize();
 
         switch(number){
             case 1:
-                return new PointFloat(endPos.x + perp.getX(), endPos.y + perp.getY());
+                return new PointFloat(centerPos.x + perp.getX() * 0.9f, centerPos.y + perp.getY() * 0.9f);
             case 2:
-                return new PointFloat(startPos.x + perp.getX(), startPos.y + perp.getY());
+                return new PointFloat(startPos.x + dirX * length * 0.2f + perp.getX() * 0.9f, startPos.y + dirY * length * 0.2f + perp.getY() * 0.9f);
             case 3:
-                return new PointFloat(startPos.x - perp.getX(), startPos.y - perp.getY());
+                return new PointFloat(startPos.x + dirX * length * 0.25f - perp.getX(), startPos.y + dirY * length * 0.25f - perp.getY());
             case 4:
                 return new PointFloat(centerPos.x - perp.getX(), centerPos.y - perp.getY());
             default:
