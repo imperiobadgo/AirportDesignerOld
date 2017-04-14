@@ -3,6 +3,7 @@ package com.pukekogames.airportdesigner.Activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.opengl.GLSurfaceView;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.pukekogames.airportdesigner.*;
 import com.pukekogames.airportdesigner.Main.ExceptionHandler;
 import com.pukekogames.airportdesigner.Main.GamePanel;
 import com.pukekogames.airportdesigner.Main.MainThread;
+import com.pukekogames.airportdesigner.OpenGL.OpenGLRenderer;
 import com.pukekogames.airportdesigner.Rendering.BitmapLoader;
 
 import java.io.*;
@@ -95,7 +97,11 @@ public class Game extends Activity {
 //
 //        setContentView(graphView);
 
-        setContentView(gamePanel);
+        GLSurfaceView glView = new GLSurfaceView(this);
+        glView.setEGLContextClientVersion(2);
+        glView.setEGLConfigChooser(8,8,8,8,16,0);
+        glView.setRenderer(new OpenGLRenderer(this));
+        setContentView(glView);
     }
 
     public void setDepotScreen() {
