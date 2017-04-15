@@ -30,9 +30,9 @@ public class Render {
     static Line ScreenLeftLine;
     static Line ScreenRightLine;
     static Line ScreenBottomLine;
+    public static int renderCalls = 0;
 
     public static void render(Canvas canvas, Paint paint, GameObject object) {
-
         if (object == null) return;
 
         if (ScreenTopLine == null){
@@ -60,7 +60,7 @@ public class Render {
 
             object.setPosition(aniX + diffX * ratio, aniY + diffY * ratio);
         }
-
+        renderCalls += 1;
         if (object instanceof Vehicle) {
             Vehicle vehicle = (Vehicle) object;
             RenderVehicle.render(canvas, paint, vehicle);

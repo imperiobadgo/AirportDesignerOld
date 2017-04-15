@@ -18,35 +18,19 @@ import java.nio.FloatBuffer;
  */
 public class OpenGLRenderer implements GLSurfaceView.Renderer {
 
+    private static int FPS = 30;
     private Game game;
     private float red;
 
-    private static float[] quad = {
-            -0.5f, 0.5f, 0.0f, 1.0f,
-            -0.5f, -0.5f, 0.0f, 1.0f,
-            0.5f, 0.5f, 0.0f, 1.0f,
-
-            -0.5f, -0.5f, 0.0f, 1.0f,
-            0.5f, -0.5f, 0.0f, 1.0f,
-            0.5f, 0.5f, 0.0f, 1.0f
-
-    };
-    private static float[] texCoords = {
-            0.0f, 0.0f,
-            0.0f, 1.0f,
-            1.0f, 0.0f,
-            0.0f, 1.0f,
-            1.0f, 1.0f,
-            1.0f, 0.0f,
-    };
-
-    private FloatBuffer quadBuffer;
-    private FloatBuffer texCoordsBuffer;
-    private ShaderProgram basicShader;
+    private long startTime;
+    private long timeMillis;
+    private long waitTime;
+    private long totalTime = 0;
+    private int frameCount = 0;
+    private long targetTime = 1000 / FPS;
 
 
-
-    public OpenGLRenderer(Game game){
+    public OpenGLRenderer(Game game) {
         this.game = game;
     }
 
@@ -56,50 +40,6 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
 
         PrimitiveHelper.init();
         TextureLoader.Instance().loadTextures(game);
-
-
-        ByteBuffer quadByteBuffer = ByteBuffer.allocateDirect(quad.length * 4);
-        quadByteBuffer.order(ByteOrder.nativeOrder());
-        quadBuffer = quadByteBuffer.asFloatBuffer();
-        quadBuffer.put(quad);
-        quadBuffer.rewind();
-
-        ByteBuffer texCoordsByteBuffer = ByteBuffer.allocateDirect(texCoords.length * 4);
-        texCoordsByteBuffer.order(ByteOrder.nativeOrder());
-        texCoordsBuffer = texCoordsByteBuffer.asFloatBuffer();
-        texCoordsBuffer.put(texCoords);
-        texCoordsBuffer.rewind();
-
-
-        String vertexShaderSource = "" +
-                "attribute vec4 a_position;" +
-                "attribute vec2 a_texCoordinate;" +
-                "" +
-                "varying vec2 v_TexCoordinate;" +
-                "" +
-                "void main()" +
-                "{" +
-                "   gl_Position = a_position;" +
-                "   v_TexCoordinate = a_texCoordinate;" +
-                "}" +
-                "";
-
-        String fragmentShaderSource = "" +
-                "uniform sampler2D u_Texture;" +
-                "" +
-                "varying vec2 v_TexCoordinate;" +
-                "" +
-                "void main()" +
-                "{" +
-                "   gl_FragColor = texture2D(u_Texture, v_TexCoordinate);" +
-                "}" +
-                "";
-
-//        String vert = ShaderProgram.readTextFileFromRawResource(game, R.)
-
-        basicShader = ShaderProgram.createBasicShader(vertexShaderSource, fragmentShaderSource);
-        basicShader.bindAttribLocation(0, "a_position");
-        basicShader.bindAttribLocation(1, "a_texCoordinate");
 
 
     }
@@ -112,6 +52,8 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
+        startTime = System.nanoTime();
+
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         red += 0.01f;
         if (red > 1) {
@@ -119,35 +61,32 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
         }
         GLES20.glClearColor(red, 0.0f, 0.0f, 1.0f);
 
-        basicShader.enable();
-
-        int mTextureUniformHandle = basicShader.getUniformLocation("u_Texture");
-
-        int mTextureCoordinateHandle = basicShader.getVertexAttribute("a_TexCoordinate");
-
-        // Set the active texture unit to texture unit 0.
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-
         int texture = TextureLoader.Instance().getTexture(Images.indexAirplaneSmall);
 
-        // Bind the texture to this unit.
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texture);
-
-        // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 0.
-        GLES20.glUniform1i(mTextureUniformHandle, 0);
+        for (int i = 0; i < 1000; i++) {
+            PrimitiveHelper.drawImageSize(texture, 0, 0, 100, 100);
+        }
 
 
-        GLES20.glVertexAttribPointer(0, 4, GLES20.GL_FLOAT, false, 4 * 4, quadBuffer);
-        GLES20.glVertexAttribPointer(1, 4, GLES20.GL_FLOAT, false, 2 * 4, texCoordsBuffer);
-        GLES20.glEnableVertexAttribArray(0);
-        GLES20.glEnableVertexAttribArray(1);
+        timeMillis = (System.nanoTime() - startTime) / 1000000;
+        waitTime = targetTime - timeMillis;
 
-        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-        GLES20.glEnable(GLES20.GL_BLEND);
+        //wait
+        try {
+            if (waitTime > 0) Thread.sleep(waitTime);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);
+        totalTime += System.nanoTime() - startTime;
+        frameCount++;
 
-        GLES20.glDisable(GLES20.GL_BLEND);
-        basicShader.disable();
+        if (frameCount == FPS) {
+            double averageFPS = 1000 / ((totalTime / frameCount) / 1000000);
+            frameCount = 0;
+            totalTime = 0;
+            System.out.println("FPS: " + averageFPS);
+        }
+
     }
 }

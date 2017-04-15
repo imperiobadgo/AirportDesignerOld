@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import com.pukekogames.airportdesigner.Helper.ChangeValues;
 import com.pukekogames.airportdesigner.Activities.Game;
+import com.pukekogames.airportdesigner.Rendering.Render;
 
 /**
  * Created by Marko Rapka on 25.05.2016.
@@ -79,7 +80,8 @@ public class MainThread extends Thread {
             frameCount++;
             if (frameCount == FPS) {
                 double averageFPS = 1000 / ((totalTime / frameCount) / 1000000);
-                cV.message = "FPS: " + Math.round(averageFPS);
+                cV.message = "FPS: " + Math.round(averageFPS) + " RC: " + Render.renderCalls;
+                Render.renderCalls = 0;
                 frameCount = 0;
                 totalTime = 0;
 //                Log.d(Game.TAG, "FPS: " + averageFPS);
