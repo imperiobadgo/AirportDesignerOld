@@ -4,32 +4,30 @@ import com.pukekogames.airportdesigner.Helper.GameLogic.AirplaneServices;
 import com.pukekogames.airportdesigner.Objects.Images;
 import com.pukekogames.airportdesigner.Objects.Prices;
 import com.pukekogames.airportdesigner.Objects.Roads.Road;
+import com.pukekogames.airportdesigner.Objects.Vehicles.BaggageTruck;
 import com.pukekogames.airportdesigner.Objects.Vehicles.StreetVehicle;
-import com.pukekogames.airportdesigner.Objects.Vehicles.TankTruck;
 
 /**
- * Created by Marko Rapka on 02.10.2016.
+ * Created by Marko Rapka on 16.04.2017.
  */
-public class TankDepot extends Depot  {
-    private static final long serialVersionUID = -9175432386573787847L;
-
-    public TankDepot(Road road) {
+public class BaggageDepot extends Depot {
+    public BaggageDepot(Road road) {
         super(road);
-        setImageID(Images.indexTankDepot);
+        setImageID(Images.indexBaggageDepot);
     }
 
     @Override
     public long getStartCosts() {
-        return Prices.TanktruckStart;
+        return Prices.BaggagatruckStart;
     }
 
     @Override
     StreetVehicle createVehicle() {
-        return new TankTruck(Align_X, Align_Y);
+        return new BaggageTruck(Align_X, Align_Y);
     }
 
     @Override
     public AirplaneServices getService() {
-        return AirplaneServices.tank;
+        return AirplaneServices.baggage;
     }
 }

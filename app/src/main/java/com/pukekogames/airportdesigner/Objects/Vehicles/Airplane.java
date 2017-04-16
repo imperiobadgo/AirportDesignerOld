@@ -498,6 +498,7 @@ public class Airplane extends Vehicle {
         }
         if (category > 2) {
             neededServices.add(AirplaneServices.tank);
+            neededServices.add(AirplaneServices.baggage);
         }
         if (category > 3) {
             neededServices.add(AirplaneServices.catering);

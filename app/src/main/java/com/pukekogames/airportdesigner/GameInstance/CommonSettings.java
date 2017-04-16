@@ -68,5 +68,5 @@ public class CommonSettings implements Serializable {
     public int buildOffset = -100;
     transient public long buildPrice = 0;
     public int snapToLineDistance = 300;
-    public int buildMinRadius = 1200;
+    public int buildMinRadius = 1800;
 }

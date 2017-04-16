@@ -117,6 +117,10 @@ public class DepotListActivity extends Activity {
                     imageId[i] = R.drawable.depot_tank;
                     priceList[i] = (int) Prices.BuildTankDepot;
                     break;
+                case "BaggageDepot":
+                    imageId[i] = R.drawable.depot_baggage;
+                    priceList[i] = (int) Prices.BuildBaggageDepot;
+                    break;
                 case "Tower":
                     imageId[i] = R.drawable.tower;
                     priceList[i] = (int) Prices.BuildTower;
@@ -153,6 +157,10 @@ public class DepotListActivity extends Activity {
                 case "TankDepot":
                     buildingType = BuildingType.tankDepot;
                     price = Prices.BuildTankDepot;
+                    break;
+                case "BaggageDepot":
+                    buildingType = BuildingType.baggageDepot;
+                    price = Prices.BuildBaggageDepot;
                     break;
                 case "Tower":
                     buildingType = BuildingType.tower;

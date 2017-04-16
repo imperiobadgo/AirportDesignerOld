@@ -69,6 +69,7 @@ public class BitmapLoader {
         bitmaps[Images.indexCateringTruck] = BitmapFactory.decodeResource(resources, R.drawable.cateringtruck, options);
         bitmaps[Images.indexCrewBus] = BitmapFactory.decodeResource(resources, R.drawable.crewbus, options);
         bitmaps[Images.indexTankTruck] = BitmapFactory.decodeResource(resources, R.drawable.tanktruck, options);
+        bitmaps[Images.indexBaggageTruck] = BitmapFactory.decodeResource(resources, R.drawable.baggagetruck, options);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 //        bitmaps[indexAirplane].compress(Bitmap.CompressFormat.PNG, quality, out);
 //        bitmaps[indexAirplane] = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
@@ -91,6 +92,7 @@ public class BitmapLoader {
         bitmaps[Images.indexCateringDepot] = BitmapFactory.decodeResource(resources, R.drawable.depot_catering, options);
         bitmaps[Images.indexCrewBusDepot] = BitmapFactory.decodeResource(resources, R.drawable.depot_crewbus, options);
         bitmaps[Images.indexTankDepot] = BitmapFactory.decodeResource(resources, R.drawable.depot_tank, options);
+        bitmaps[Images.indexBaggageDepot] = BitmapFactory.decodeResource(resources, R.drawable.depot_baggage, options);
         bitmaps[Images.indexTower] = BitmapFactory.decodeResource(resources, R.drawable.tower, options);
         bitmaps[Images.indexTerminal] = BitmapFactory.decodeResource(resources, R.drawable.terminal, options);
 //        bitmaps[indexTaxiway].compress(Bitmap.CompreBitmapFactory.decodeResource(resources, R.drawable.tower, options);ssFormat.PNG, quality, out);

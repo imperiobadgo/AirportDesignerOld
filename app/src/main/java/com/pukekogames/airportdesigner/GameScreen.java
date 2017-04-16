@@ -212,10 +212,12 @@ public class GameScreen extends Screen {
                 Intent intent = new Intent("com.pukekogames.airportdesigner.DEPOTLISTACTIVITY");
                 ArrayList<String> classNamesList = new ArrayList<>();
 
-                classNamesList.add("BusDepot");
-                classNamesList.add("CateringDepot");
                 classNamesList.add("CrewBusDepot");
+                classNamesList.add("BusDepot");
+                classNamesList.add("BaggageDepot");
                 classNamesList.add("TankDepot");
+                classNamesList.add("CateringDepot");
+
                 if (GameInstance.Settings().level >= 3){
                     classNamesList.add("Terminal");
                 }

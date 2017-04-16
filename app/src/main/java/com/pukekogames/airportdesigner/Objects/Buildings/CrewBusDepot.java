@@ -33,9 +33,4 @@ public class CrewBusDepot extends Depot  {
     public AirplaneServices getService() {
         return AirplaneServices.crew;
     }
-
-    @Override
-    public void clicked(int mx, int my) {
-
-    }
 }

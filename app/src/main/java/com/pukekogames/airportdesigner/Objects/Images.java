@@ -17,12 +17,14 @@ public class Images {
     public static int indexCateringTruck = 51;
     public static int indexCrewBus = 52;
     public static int indexTankTruck = 53;
+    public static int indexBaggageTruck = 54;
     public static int indexBusDepot = 60;
     public static int indexCateringDepot = 61;
     public static int indexCrewBusDepot = 62;
     public static int indexTankDepot = 63;
-    public static int indexTower = 64;
-    public static int indexTerminal = 65;
+    public static int indexBaggageDepot = 64;
+    public static int indexTower = 65;
+    public static int indexTerminal = 66;
 
 
 }

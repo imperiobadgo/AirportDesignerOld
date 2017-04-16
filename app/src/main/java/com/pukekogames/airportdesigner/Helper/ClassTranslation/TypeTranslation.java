@@ -43,6 +43,9 @@ public class TypeTranslation {
             case tankDepot:
                 returnBuilding = new TankDepot(road);
                 break;
+            case baggageDepot:
+                returnBuilding = new BaggageDepot(road);
+                break;
             case tower:
                 returnBuilding = new Tower(road);
                 break;

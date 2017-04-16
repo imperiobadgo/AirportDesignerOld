@@ -8,6 +8,7 @@ public enum BuildingType {
     busDepot(),
     cateringDepot(),
     crewBusDepot(),
+    baggageDepot(),
     tankDepot(),
     tower(),
     terminal()

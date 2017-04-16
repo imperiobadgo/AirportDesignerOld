@@ -8,5 +8,6 @@ public enum AirplaneServices {
     crew,
     catering,
     tank,
+    baggage,
     antiice
 }

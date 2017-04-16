@@ -185,9 +185,9 @@ public class RenderVehicle {
             airplane.setDimension(bitmap.getWidth(), bitmap.getHeight());
             float scale = GameInstance.Settings().Zoom;
             if (airplane.getCategory() <= 2) {
-                scale *= 0.5;
-            } else if (airplane.getCategory() == 3) {
-
+                scale *= 0.7;
+            }else{
+                scale *= 1.6;
             }
             float altitude = airplane.getAltitude();
             float speed = airplane.getSpeed();

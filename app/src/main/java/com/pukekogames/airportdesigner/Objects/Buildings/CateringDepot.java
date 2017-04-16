@@ -34,9 +34,4 @@ public class CateringDepot extends Depot {
     public AirplaneServices getService() {
         return AirplaneServices.catering;
     }
-
-    @Override
-    public void clicked(int mx, int my) {
-
-    }
 }
