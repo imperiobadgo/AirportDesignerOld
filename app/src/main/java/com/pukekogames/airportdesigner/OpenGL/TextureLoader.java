@@ -20,21 +20,32 @@ public class TextureLoader {
         return ourInstance;
     }
 
-    private int[] textures = new int[100];
+    private Texture[] textures = new Texture[100];
 
     public void loadTextures(Context c){
 
         textures[Images.indexAirplaneSmall] = loadTexture(c, R.drawable.airplane_small);
+        textures[Images.indexAirplaneCessna] = loadTexture(c, R.drawable.airplane_cessna);
+        textures[Images.indexAirplaneA320] = loadTexture(c, R.drawable.airplane_a320);
+        textures[Images.indexAirplane777] = loadTexture(c, R.drawable.airplane_777);
 
+
+        textures[Images.indexParkGate] = loadTexture(c, R.drawable.parkgate);
+        textures[Images.indexStreet] = loadTexture(c, R.drawable.street);
+        textures[Images.indexRunwayEnd] = loadTexture(c, R.drawable.runway_end);
+        textures[Images.indexRunwayMiddle] = loadTexture(c, R.drawable.runway_middle);
+        textures[Images.indexTaxiway] = loadTexture(c, R.drawable.taxiway);
     }
 
-    public int getTexture(int id){
+    public Texture getTexture(int id){
+        if (id < 0 || id > textures.length) return null;
         return textures[id];
     }
 
-    private static int loadTexture(final Context context, final int resourceId)
+    private static Texture loadTexture(final Context context, final int resourceId)
     {
         final int[] textureHandle = new int[1];
+        Texture texture = null;
 
         GLES20.glGenTextures(1, textureHandle, 0);
 
@@ -56,8 +67,11 @@ public class TextureLoader {
             // Load the bitmap into the bound texture.
             GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
 
+            texture = new Texture(textureHandle[0], bitmap.getWidth(), bitmap.getHeight());
+
             // Recycle the bitmap, since its data has been loaded into OpenGL.
             bitmap.recycle();
+
         }
 
         if (textureHandle[0] == 0)
@@ -65,6 +79,6 @@ public class TextureLoader {
             throw new RuntimeException("Error loading texture.");
         }
 
-        return textureHandle[0];
+        return texture;
     }
 }

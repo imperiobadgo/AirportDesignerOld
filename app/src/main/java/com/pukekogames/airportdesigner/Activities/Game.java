@@ -20,6 +20,7 @@ import com.pukekogames.airportdesigner.Main.ExceptionHandler;
 import com.pukekogames.airportdesigner.Main.GamePanel;
 import com.pukekogames.airportdesigner.Main.MainThread;
 import com.pukekogames.airportdesigner.OpenGL.OpenGLRenderer;
+import com.pukekogames.airportdesigner.OpenGL.OpenGLView;
 import com.pukekogames.airportdesigner.Rendering.BitmapLoader;
 
 import java.io.*;
@@ -99,16 +100,14 @@ public class Game extends Activity {
 //
 //        setContentView(graphView);
 
-        GLSurfaceView glView = new GLSurfaceView(this);
+
 
         final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         final ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
         final boolean supportsEs2 = configurationInfo.reqGlEsVersion >= 0x20000;
         if (false){
 
-            glView.setEGLContextClientVersion(2);
-            glView.setEGLConfigChooser(8,8,8,8,16,0);
-            glView.setRenderer(new OpenGLRenderer(this));
+            OpenGLView glView = new OpenGLView(this);
             setContentView(glView);
 
         }else{
