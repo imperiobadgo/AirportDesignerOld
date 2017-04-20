@@ -6,6 +6,7 @@ import com.pukekogames.airportdesigner.Helper.Geometry.Vector2D;
 import com.pukekogames.airportdesigner.Objects.Buildings.Building;
 import com.pukekogames.airportdesigner.Objects.Buildings.Terminal;
 import com.pukekogames.airportdesigner.Objects.Images;
+import com.pukekogames.airportdesigner.Objects.Vehicles.StreetVehicle;
 
 import java.util.ArrayList;
 
@@ -95,6 +96,18 @@ public class ParkGate extends Road {
 
     }
 
+    public void addVehicle(StreetVehicle vehicle){
+        vehiclesServices++;
+    }
+
+    public void removeVehicle(StreetVehicle vehicle){
+        vehiclesServices--;
+    }
+
+    public void resetVehiclesServicing(){
+        vehiclesServices = 0;
+    }
+
     public int getEntryNumber(){
         return 1;
     }
@@ -104,7 +117,7 @@ public class ParkGate extends Road {
     }
 
     public boolean isServicePosition(int number){
-        if (vehiclesServices > 0){
+        if (vehiclesServices > 1){
             return number == 2;
         }else{
             return number == 5;

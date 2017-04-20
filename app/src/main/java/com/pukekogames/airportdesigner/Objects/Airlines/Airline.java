@@ -2,8 +2,7 @@ package com.pukekogames.airportdesigner.Objects.Airlines;
 
 import com.pukekogames.airportdesigner.GameInstance.GameInstance;
 import com.pukekogames.airportdesigner.Objects.Vehicles.Airplane;
-import com.pukekogames.airportdesigner.Objects.Vehicles.VehicleData.AirplaneDataB777;
-import com.pukekogames.airportdesigner.Objects.Vehicles.VehicleData.AirplaneDataA320;
+import com.pukekogames.airportdesigner.Objects.Vehicles.VehicleData.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,19 +37,37 @@ public class Airline implements Serializable {
         Airplane newAirplane;
 
         if (GameInstance.Settings().level > 3) {
-            if (random.nextInt(2) == 1) {
+            int r = random.nextInt(7);
+            if (r == 1) {
                 newAirplane = new Airplane(new AirplaneDataA320(), this);
+            } else if (r == 2) {
+                newAirplane = new Airplane(new AirplaneDataA320Czech(), this);
+            } else if (r == 3) {
+                newAirplane = new Airplane(new AirplaneDataB737Alaska(), this);
+            } else if (r == 4) {
+                newAirplane = new Airplane(new AirplaneDataA380(), this);
+            } else if (r == 5) {
+                newAirplane = new Airplane(new AirplaneDataB747(), this);
             } else {
                 newAirplane = new Airplane(new AirplaneDataB777(), this);
             }
         } else {
-            newAirplane = new Airplane(new AirplaneDataA320(), this);
+            if (random.nextInt(2) == 0){
+                newAirplane = new Airplane(new AirplaneDataA320Czech(), this);
+            }else{
+                newAirplane = new Airplane(new AirplaneDataA320(), this);
+            }
+
         }
+
         int plannedHour = random.nextInt(16) + 5;
         String hourString = plannedHour + "";
-        while (hourString.length() < 2) {
+        while (hourString.length() < 2)
+
+        {
             hourString = 0 + hourString;
         }
+
         String callSign = AirlineList.getAirlineCode(id) + hourString + (random.nextInt(88) + 10);
 
         PlannedArrival plannedArrival = new PlannedArrival(plannedHour, random.nextInt(2) + random.nextInt(2) + 1, newAirplane);

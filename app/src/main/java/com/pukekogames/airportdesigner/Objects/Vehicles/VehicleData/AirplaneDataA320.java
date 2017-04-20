@@ -7,7 +7,7 @@ import com.pukekogames.airportdesigner.Objects.Images;
  */
 public class AirplaneDataA320 extends AirplanePerformance {
 
-    public AirplaneDataA320(){
+    public AirplaneDataA320() {
         StandardAirplane();
         imageID = Images.indexAirplaneA320;
         category = 3;

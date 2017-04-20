@@ -10,6 +10,6 @@ public class AirplaneDataB747 extends AirplanePerformance {
     public AirplaneDataB747(){
         StandardAirplane();
         imageID = Images.indexAirplane747;
-        category = 3;
+        category = 5;
     }
 }

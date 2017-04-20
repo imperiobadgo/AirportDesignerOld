@@ -171,6 +171,9 @@ public abstract class Road extends ClickableGameObject {
     }
 
     public void setBlocked(boolean blocked) {
+        if (!blocked && this instanceof ParkGate){
+            ((ParkGate) this).resetVehiclesServicing();
+        }
         this.blocked = blocked;
     }
 

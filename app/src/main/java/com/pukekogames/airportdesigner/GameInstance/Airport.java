@@ -759,7 +759,7 @@ public class Airport implements Serializable {
                 }
             }
             if (serviceAlready) continue;
-            if (sameAirplaneTask >= MAXVEHICLESATGATE) break;
+            if (sameAirplaneTask > MAXVEHICLESATGATE) break;
 
             for (Building building : buildings) {
                 Depot depot;

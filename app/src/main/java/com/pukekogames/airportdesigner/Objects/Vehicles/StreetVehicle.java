@@ -75,7 +75,7 @@ public abstract class StreetVehicle extends Vehicle {
             GameInstance.Airport().removeVehicleTask(task);
 //            driveHome();
             ParkGate targetGate = task.getParkPosition();
-            parkgateNumber = targetGate.getLeavePosition();
+            parkgateNumber++;
             ignoreCollisionTime = 100;
             driveState = VehicleState.drivingToDepot;
         }
@@ -89,6 +89,7 @@ public abstract class StreetVehicle extends Vehicle {
             } else {
                 reachedParkGate = false;
                 parkgateNumber = 0;
+                targetGate.removeVehicle(this);
                 driveHome();
             }
         }
@@ -132,7 +133,7 @@ public abstract class StreetVehicle extends Vehicle {
                 ParkGate targetGate = task.getParkPosition();
 
                 parkgateNumber = targetGate.getEntryNumber() + 1;
-
+                targetGate.addVehicle(this);
 
                 PointFloat point = targetGate.getCornerPosition(parkgateNumber);
                 targetPoint.set(point.x, point.y);
@@ -179,6 +180,7 @@ public abstract class StreetVehicle extends Vehicle {
 //                            driveState = VehicleState.arrivedAtGate;
                             ParkGate targetGate = task.getParkPosition();
                             parkgateNumber = targetGate.getEntryNumber();
+                            targetGate.addVehicle(this);
 
                             targetPoint.set(parkGateEntryPoint.x, parkGateEntryPoint.y);
                         } else {
@@ -233,7 +235,7 @@ public abstract class StreetVehicle extends Vehicle {
 //        Math.sqrt(diffX * diffX + diffY * diffY) > 1000 &&
 
         if (toTarget.Length() < 200 && driveState != VehicleState.servicing) {
-            if (targetGate.isServicePosition(parkgateNumber)) {
+            if (targetGate.isServicePosition(parkgateNumber) && driveState != VehicleState.drivingToDepot) {
                 driveState = VehicleState.servicing;
                 serviceTime = getServiceTime();
 
