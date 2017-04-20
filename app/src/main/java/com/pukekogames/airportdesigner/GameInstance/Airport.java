@@ -32,7 +32,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class Airport implements Serializable {
     //    public static final boolean DEBUG = true;
-    private static final int MAXVEHICLESATGATE = 1;
+    private static final int MAXVEHICLESATGATE = 2;
     private static final long serialVersionUID = -2197413813911692132L;
     public int airplaneCount = 0;
     public int airplanesToNextLevel = 0;
@@ -414,6 +414,11 @@ public class Airport implements Serializable {
             AirplaneServices[] services = airplane.needsService();
             if (services.length > 0) {
                 NeedVehicle(airplane, services);
+            }else{
+                AirplaneServices[] bordingServices = airplane.needsBordingService();
+                if (bordingServices.length > 0){
+                    NeedVehicle(airplane, bordingServices);
+                }
             }
         }
         ArrayList<Vehicle> removeVehicles = new ArrayList<>();
@@ -753,7 +758,8 @@ public class Airport implements Serializable {
                     }
                 }
             }
-            if (serviceAlready || sameAirplaneTask >= MAXVEHICLESATGATE) break;
+            if (serviceAlready) continue;
+            if (sameAirplaneTask >= MAXVEHICLESATGATE) break;
 
             for (Building building : buildings) {
                 Depot depot;

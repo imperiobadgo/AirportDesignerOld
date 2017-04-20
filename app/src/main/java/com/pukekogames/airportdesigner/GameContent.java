@@ -47,6 +47,7 @@ public class GameContent {
                 GameInstance.Settings().level = 3;
                 break;
         }
+        GameInstance.Airport().CheckGateServicePossibility();
     }
 
     private static void generateStartAirport() {
@@ -188,10 +189,20 @@ public class GameContent {
         addParkGate(6, 11);
 
         //connect first 5 ParkGates
-        addStreet(7, 8);
-        addStreet(8, 9);
-        addStreet(9, 10);
-        addStreet(10, 11);
+        Street s1 = addStreet(7, 8);
+        Street s2 = addStreet(8, 9);
+        Street s3 = addStreet(9, 10);
+        Street s4 = addStreet(10, 11);
+
+        Terminal t1 = new Terminal(s1);
+        Terminal t2 = new Terminal(s2);
+        Terminal t3 = new Terminal(s3);
+        Terminal t4 = new Terminal(s4);
+
+        GameInstance.Airport().AddBuilding(t1);
+        GameInstance.Airport().AddBuilding(t2);
+        GameInstance.Airport().AddBuilding(t3);
+        GameInstance.Airport().AddBuilding(t4);
 
         //RoadIntersections for Depots
         addRoadIntersection(4 * GameInstance.Settings().buildMinRadius, 4 * GameInstance.Settings().buildMinRadius);//12
@@ -330,9 +341,17 @@ public class GameContent {
         addParkGate(44,47);
         addParkGate(45,48);
 
-        addStreet(42,46);
-        addStreet(46,47);
-        addStreet(47,48);
+        Street street4 = addStreet(42,46);
+        Street street5 = addStreet(46,47);
+        Street street6 = addStreet(47,48);
+
+        Terminal terminal4 = new Terminal(street4);
+        Terminal terminal5 = new Terminal(street5);
+        Terminal terminal6 = new Terminal(street6);
+
+        GameInstance.Airport().AddBuilding(terminal4);
+        GameInstance.Airport().AddBuilding(terminal5);
+        GameInstance.Airport().AddBuilding(terminal6);
 
         //connect depots with west gates
         addRoadIntersection(4 * GameInstance.Settings().buildMinRadius, 7 * GameInstance.Settings().buildMinRadius);//49
@@ -352,5 +371,12 @@ public class GameContent {
         addTaxiWay(53,54);
         addTaxiWay(54,45);
         addTaxiWay(51,39);
+
+        addRoadIntersection(6 * GameInstance.Settings().buildMinRadius, 6 * GameInstance.Settings().buildMinRadius);//55
+        Street baggageStreet = addStreet(14,55);
+
+        BaggageDepot baggageDepot = new BaggageDepot(baggageStreet);
+
+        GameInstance.Airport().AddBuilding(baggageDepot);
     }
 }

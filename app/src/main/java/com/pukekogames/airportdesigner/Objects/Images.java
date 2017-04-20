@@ -7,7 +7,11 @@ public class Images {
     public static int indexAirplaneSmall = 10;
     public static int indexAirplaneCessna = 11;
     public static int indexAirplaneA320 = 15;
-    public static int indexAirplane777 = 16;
+    public static int indexAirplaneA320Czech = 16;
+    public static int indexAirplaneB737Alaska = 17;
+    public static int indexAirplane777 = 18;
+    public static int indexAirplane747 = 19;
+    public static int indexAirplane380 = 20;
     public static int indexRunwayEnd = 30;
     public static int indexRunwayMiddle = 31;
     public static int indexTaxiway = 36;

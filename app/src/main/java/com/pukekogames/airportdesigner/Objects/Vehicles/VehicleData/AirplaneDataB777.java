@@ -5,9 +5,9 @@ import com.pukekogames.airportdesigner.Objects.Images;
 /**
  * Created by Marko Rapka on 19.03.2017.
  */
-public class AirplaneData777 extends AirplanePerformance {
+public class AirplaneDataB777 extends AirplanePerformance {
 
-    public AirplaneData777() {
+    public AirplaneDataB777() {
         StandardAirplane();
         imageID = Images.indexAirplane777;
         category = 4;

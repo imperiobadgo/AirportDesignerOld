@@ -2,7 +2,7 @@ package com.pukekogames.airportdesigner.Objects.Airlines;
 
 import com.pukekogames.airportdesigner.GameInstance.GameInstance;
 import com.pukekogames.airportdesigner.Objects.Vehicles.Airplane;
-import com.pukekogames.airportdesigner.Objects.Vehicles.VehicleData.AirplaneData777;
+import com.pukekogames.airportdesigner.Objects.Vehicles.VehicleData.AirplaneDataB777;
 import com.pukekogames.airportdesigner.Objects.Vehicles.VehicleData.AirplaneDataA320;
 
 import java.io.Serializable;
@@ -41,7 +41,7 @@ public class Airline implements Serializable {
             if (random.nextInt(2) == 1) {
                 newAirplane = new Airplane(new AirplaneDataA320(), this);
             } else {
-                newAirplane = new Airplane(new AirplaneData777(), this);
+                newAirplane = new Airplane(new AirplaneDataB777(), this);
             }
         } else {
             newAirplane = new Airplane(new AirplaneDataA320(), this);

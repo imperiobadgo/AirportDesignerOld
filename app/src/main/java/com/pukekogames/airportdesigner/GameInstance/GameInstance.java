@@ -173,7 +173,7 @@ public class GameInstance implements Serializable {
 
     private void updateTime() {
         ticksPerTime += 1;
-        if (ticksPerTime == 3) {
+        if (ticksPerTime == 4) {
             time.increase();
             ticksPerTime = 0;
 

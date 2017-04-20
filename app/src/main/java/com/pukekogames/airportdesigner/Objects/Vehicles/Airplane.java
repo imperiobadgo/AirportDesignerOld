@@ -29,6 +29,7 @@ public class Airplane extends Vehicle {
 //    private AirplanePerformance performance;
 
     private ArrayList<AirplaneServices> neededServices;
+    private ArrayList<AirplaneServices> bordingServices;
     private Airline airline;
     private String callSign;
     private TimeStamp plannedTime;
@@ -53,6 +54,7 @@ public class Airplane extends Vehicle {
         category = performance.getCategory();
         collisionRadius = performance.collisionRadius;
         neededServices = new ArrayList<>();
+        bordingServices = new ArrayList<>();
     }
 
     @Override
@@ -101,7 +103,7 @@ public class Airplane extends Vehicle {
             waitTime--;
             return;
         }
-        if (neededServices.size() > 0) {
+        if (neededServices.size() > 0 || bordingServices.size() > 0) {
             if (isServiceNotPossible()) {
                 warnings.add(GameplayWarning.noServicesPossible);
             }
@@ -485,6 +487,7 @@ public class Airplane extends Vehicle {
         pathfinding = new Dijkstra(lastIntersection, nextIntersection, this);
         state = newState;
         neededServices.clear();
+        bordingServices.clear();
 
 //        System.out.println("new Pathfinding startet: " + indexoflastIntersection + " - " + indexofNextIntersection);
 
@@ -502,16 +505,28 @@ public class Airplane extends Vehicle {
         }
         if (category > 3) {
             neededServices.add(AirplaneServices.catering);
+            bordingServices.add(AirplaneServices.tank);
+            bordingServices.add(AirplaneServices.baggage);
+        }
+
+        if (category > 2) {
+            bordingServices.add(AirplaneServices.bus);
+            bordingServices.add(AirplaneServices.crew);
         }
     }
 
     public void completedService(AirplaneServices service) {
-        if (neededServices.size() == 0) return;
+        if (neededServices.size() == 0 && bordingServices.size() == 0) return;
 
         if (neededServices.contains(service)) {
             neededServices.remove(service);
+        }else {
+            if (bordingServices.contains(service)) {
+                bordingServices.remove(service);
+                GameInstance.Instance().addMoney(category * 5L);
+            }
         }
-        if (neededServices.size() == 0) {
+        if (neededServices.size() == 0 && bordingServices.size() == 0) {
             state = AirplaneState.ReadyForPushback;
         }
     }
@@ -521,6 +536,13 @@ public class Airplane extends Vehicle {
             return new AirplaneServices[0];
         }
         return neededServices.toArray(new AirplaneServices[neededServices.size()]);
+    }
+
+    public AirplaneServices[] needsBordingService() {
+        if (isServiceNotPossible()) {
+            return new AirplaneServices[0];
+        }
+        return bordingServices.toArray(new AirplaneServices[bordingServices.size()]);
     }
 
     public boolean isServiceNotPossible() {
@@ -639,7 +661,12 @@ public class Airplane extends Vehicle {
         } else if (GameInstance.Airport().getRunwayCount() == 2) {
             fewRunwayExtra = 1000;
         }
-        return category * 2000 + Math.round(parkgateRunwayDistance / 1.7f) + fewRunwayExtra;
+        int extraServices = 0;
+        if (category > 2){
+            extraServices = 1000 * category;
+        }
+
+        return category * 3000 + Math.round(parkgateRunwayDistance / 1.2f) + fewRunwayExtra + extraServices;
     }
 }
 

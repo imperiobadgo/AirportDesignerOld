@@ -55,11 +55,16 @@ public class AirplaneBoardingActivity extends Activity {
 
         ListView servicesListView = (ListView) findViewById(R.id.serviceListView);
         ArrayList<String> myStringArray = new ArrayList<String>();
-        for (int i = 0; i < airplane.needsService().length; i++) {
-            AirplaneServices service = airplane.needsService()[i];
+        AirplaneServices[] services = airplane.needsService();
+        for (int i = 0; i < services.length; i++) {
+            AirplaneServices service = services[i];
             myStringArray.add(service.name());
         }
-
+        services = airplane.needsBordingService();
+        for (int i = 0; i < services.length; i++) {
+            AirplaneServices service = services[i];
+            myStringArray.add(service.name());
+        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_stringrow, myStringArray);
         servicesListView.setAdapter(adapter);

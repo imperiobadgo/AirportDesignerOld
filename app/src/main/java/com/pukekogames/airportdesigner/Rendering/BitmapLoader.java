@@ -64,7 +64,11 @@ public class BitmapLoader {
         bitmaps[Images.indexAirplaneSmall] = BitmapFactory.decodeResource(resources, R.drawable.airplane_small, options);
         bitmaps[Images.indexAirplaneCessna] = BitmapFactory.decodeResource(resources, R.drawable.airplane_cessna, options);
         bitmaps[Images.indexAirplaneA320] = BitmapFactory.decodeResource(resources, R.drawable.airplane_a320, options);
+        bitmaps[Images.indexAirplaneA320Czech] = BitmapFactory.decodeResource(resources, R.drawable.airplane_a320_czech, options);
+        bitmaps[Images.indexAirplaneB737Alaska] = BitmapFactory.decodeResource(resources, R.drawable.airplane_b737_alaska, options);
         bitmaps[Images.indexAirplane777] = BitmapFactory.decodeResource(resources, R.drawable.airplane_777, options);
+        bitmaps[Images.indexAirplane747] = BitmapFactory.decodeResource(resources, R.drawable.airplane_b747, options);
+        bitmaps[Images.indexAirplane380] = BitmapFactory.decodeResource(resources, R.drawable.airplane_a380, options);
         bitmaps[Images.indexBus] = BitmapFactory.decodeResource(resources, R.drawable.bus, options);
         bitmaps[Images.indexCateringTruck] = BitmapFactory.decodeResource(resources, R.drawable.cateringtruck, options);
         bitmaps[Images.indexCrewBus] = BitmapFactory.decodeResource(resources, R.drawable.crewbus, options);

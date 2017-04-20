@@ -18,6 +18,7 @@ public class ParkGate extends Road {
     private int waitBlock = 0;
     transient public ArrayList<AirplaneServices> connectedServices;
     private boolean connectedRoadHasTerminal;
+    private int vehiclesServices;
 
 
     public ParkGate() {
@@ -77,17 +78,41 @@ public class ParkGate extends Road {
 
         switch(number){
             case 1:
-                return new PointFloat(centerPos.x + perp.getX() * 0.9f, centerPos.y + perp.getY() * 0.9f);
+                return new PointFloat(startPos.x + dirX * length * 0.9f + perp.getX() * 0.6f, startPos.y + dirY * length * 0.9f + perp.getY() * 0.6f);
             case 2:
-                return new PointFloat(startPos.x + dirX * length * 0.15f + perp.getX() * 0.4f, startPos.y + dirY * length * 0.15f + perp.getY() * 0.4f);
+                return new PointFloat(centerPos.x + perp.getX() * 0.9f, centerPos.y + perp.getY() * 0.9f);
             case 3:
-                return new PointFloat(startPos.x + dirX * length * 0.2f - perp.getX() * 0.5f, startPos.y + dirY * length * 0.2f - perp.getY() * 0.5f);
+                return new PointFloat(startPos.x + dirX * length * 0.15f + perp.getX() * 0.4f, startPos.y + dirY * length * 0.15f + perp.getY() * 0.4f);
             case 4:
+                return new PointFloat(startPos.x + dirX * length * 0.2f - perp.getX() * 0.5f, startPos.y + dirY * length * 0.2f - perp.getY() * 0.5f);
+            case 5:
                 return new PointFloat(centerPos.x - perp.getX(), centerPos.y - perp.getY());
+            case 6:
+                return new PointFloat(startPos.x + dirX * length * 0.9f - perp.getX() * 0.4f, startPos.y + dirY * length * 0.9f - perp.getY()* 0.4f);
             default:
                 return endPos;
         }
 
+    }
+
+    public int getEntryNumber(){
+        return 1;
+    }
+
+    public int getLeavePosition(){
+        return 6;
+    }
+
+    public boolean isServicePosition(int number){
+        if (vehiclesServices > 0){
+            return number == 2;
+        }else{
+            return number == 5;
+        }
+    }
+
+    public boolean isLeavePosition(int number){
+        return number == 6;
     }
 
 

@@ -5,6 +5,7 @@ import com.pukekogames.airportdesigner.Helper.GameLogic.AirplaneServices;
 import com.pukekogames.airportdesigner.Helper.GameLogic.GameplayWarning;
 import com.pukekogames.airportdesigner.Helper.GameLogic.VehicleTask;
 import com.pukekogames.airportdesigner.Helper.Geometry.PointFloat;
+import com.pukekogames.airportdesigner.Helper.Geometry.Vector2D;
 import com.pukekogames.airportdesigner.Helper.Pathfinding.Dijkstra;
 import com.pukekogames.airportdesigner.Objects.Buildings.Depot;
 import com.pukekogames.airportdesigner.Objects.RoadIntersection;
@@ -28,6 +29,8 @@ public abstract class StreetVehicle extends Vehicle {
     Depot homeDepot;
     public boolean reachedParkGate;
     public int parkgateNumber;
+    private PointFloat parkGateEntryPoint;
+    private Vector2D parkGateEntryPointVector;
 
     StreetVehicle(float x, float y) {
         super(x, y);
@@ -63,18 +66,33 @@ public abstract class StreetVehicle extends Vehicle {
 
         if (serviceTime > 0 && driveState == VehicleState.servicing) {
             serviceTime--;
+            targetSpeed = 0;
+            updateVelocity();
+            setPosition(Align_X, Align_Y);
+            return;
         } else if (serviceTime <= 0 && driveState == VehicleState.servicing) {
             task.getAirplane().completedService(getService());
             GameInstance.Airport().removeVehicleTask(task);
-            driveHome();
+//            driveHome();
+            ParkGate targetGate = task.getParkPosition();
+            parkgateNumber = targetGate.getLeavePosition();
             ignoreCollisionTime = 100;
+            driveState = VehicleState.drivingToDepot;
         }
         setDistanceToNextVehicle();
 
-        if (reachedParkGate && driveState == VehicleState.arrivedAtGate) {
-            driveOnParkGate();
-            return;
+        if (reachedParkGate) {
+            ParkGate targetGate = task.getParkPosition();
+            if (targetGate.getLeavePosition() >= parkgateNumber) {
+                driveOnParkGate();
+                return;
+            } else {
+                reachedParkGate = false;
+                parkgateNumber = 0;
+                driveHome();
+            }
         }
+
         updateHeadingAndDistanceToTarget();
 
 
@@ -101,6 +119,26 @@ public abstract class StreetVehicle extends Vehicle {
             updateVelocity();
             setPosition(Align_X, Align_Y);
             return;
+        }
+
+
+        if (driveState == VehicleState.drivingToGate && parkGateEntryPoint != null) {
+            parkGateEntryPointVector.set(Align_X, Align_Y, parkGateEntryPoint.x, parkGateEntryPoint.y);
+            if (parkGateEntryPointVector.Length() < Math.abs(distanceToCorner * 1.2f)) { //found parkGateEntryPoint
+                reachedParkGate = true;
+
+                driveState = VehicleState.arrivedAtGate;
+
+                ParkGate targetGate = task.getParkPosition();
+
+                parkgateNumber = targetGate.getEntryNumber() + 1;
+
+
+                PointFloat point = targetGate.getCornerPosition(parkgateNumber);
+                targetPoint.set(point.x, point.y);
+                return;
+            }
+
         }
 
         if (toTarget.Length() < Math.abs(distanceToCorner) && currentRoad != null) { //found next target point
@@ -136,14 +174,13 @@ public abstract class StreetVehicle extends Vehicle {
                         if (getNextIntersection().equals(task.getParkIntersection())) {
 
                             reachedParkGate = true;
-                            serviceTime = getServiceTime();
-
-                            driveState = VehicleState.arrivedAtGate;
-                            parkgateNumber = 1;
+//                            serviceTime = getServiceTime();
+//
+//                            driveState = VehicleState.arrivedAtGate;
                             ParkGate targetGate = task.getParkPosition();
-                            PointFloat target = targetGate.getCornerPosition(parkgateNumber);
+                            parkgateNumber = targetGate.getEntryNumber();
 
-                            targetPoint.set(target.x, target.y);
+                            targetPoint.set(parkGateEntryPoint.x, parkGateEntryPoint.y);
                         } else {
                             driveHome();
                         }
@@ -195,21 +232,25 @@ public abstract class StreetVehicle extends Vehicle {
 
 //        Math.sqrt(diffX * diffX + diffY * diffY) > 1000 &&
 
-        if (toTarget.Length() < 200) {
-            if (parkgateNumber == 4) {
+        if (toTarget.Length() < 200 && driveState != VehicleState.servicing) {
+            if (targetGate.isServicePosition(parkgateNumber)) {
                 driveState = VehicleState.servicing;
-                parkgateNumber = 0;
-                speed = 0;
-            } else {
-                parkgateNumber++;
-                PointFloat target = targetGate.getCornerPosition(parkgateNumber);
+                serviceTime = getServiceTime();
 
-                targetPoint.set(target.x, target.y);
+                speed = 0;
             }
+            parkgateNumber++;
+            PointFloat target = targetGate.getCornerPosition(parkgateNumber);
+
+            targetPoint.set(target.x, target.y);
+
 
         }
-
-        targetSpeed = performance.maxSpeed / 2f;
+        if (driveState == VehicleState.servicing) {
+            targetSpeed = 0;
+        } else {
+            targetSpeed = performance.maxSpeed / 2f;
+        }
 
 //        float diffX = targetPoint.x - Align_X;
 //        float diffY = targetPoint.y - Align_Y;
@@ -275,6 +316,9 @@ public abstract class StreetVehicle extends Vehicle {
 
     public void setTask(VehicleTask task) {
         this.task = task;
+        ParkGate targetGate = task.getParkPosition();
+        parkGateEntryPoint = targetGate.getCornerPosition(targetGate.getEntryNumber());
+        parkGateEntryPointVector = new Vector2D(Align_X, Align_Y, parkGateEntryPoint.x, parkGateEntryPoint.y);
     }
 
     public void clearVehicle() {
