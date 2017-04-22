@@ -157,10 +157,14 @@ public class RenderAirport {
 
         if (airport.getConnectionsMissing() != null && !airport.isGeneratingNewChecks()) {
             paint.reset();
-            for (ConnectionMissing connectionMissing : airport.getConnectionsMissing()) {
-                if (airport.isGeneratingNewChecks()) break;
-                RoadIntersection roadIntersection = connectionMissing.getTarget();
-                RenderRoadIntersection.drawPossibleSelection(canvas, paint, roadIntersection, true);
+            try {
+                for (ConnectionMissing connectionMissing : airport.getConnectionsMissing()) {
+                    if (airport.isGeneratingNewChecks()) break;
+                    RoadIntersection roadIntersection = connectionMissing.getTarget();
+                    RenderRoadIntersection.drawPossibleSelection(canvas, paint, roadIntersection, true);
+                }
+            }catch(Exception e){
+
             }
         }
 

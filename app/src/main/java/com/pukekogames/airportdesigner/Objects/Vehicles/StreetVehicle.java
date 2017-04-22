@@ -61,7 +61,9 @@ public abstract class StreetVehicle extends Vehicle {
         }
         if (hasFailedToFoundPath) {
             warnings.add(GameplayWarning.cantFindPath);
-            updateSearch();
+            if (pathfinding == null) {
+                updateSearch();
+            }
         }
 
         if (serviceTime > 0 && driveState == VehicleState.servicing) {
