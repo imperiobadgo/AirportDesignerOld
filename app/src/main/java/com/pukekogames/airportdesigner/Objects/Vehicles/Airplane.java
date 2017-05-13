@@ -91,7 +91,9 @@ public class Airplane extends Vehicle {
         }
         if (hasFailedToFoundPath) {
             warnings.add(GameplayWarning.cantFindPath);
-            updateSearch();
+            if (pathfinding == null) {
+                updateSearch();
+            }
             return;
         }
         if (!(state == AirplaneState.Arrival || state == AirplaneState.Landing || state == AirplaneState.Takeoff || state == AirplaneState.Departure)) {
@@ -555,7 +557,7 @@ public class Airplane extends Vehicle {
 
         if (neededServices.contains(service)) {
             neededServices.remove(service);
-        }else {
+        } else {
             if (bordingServices.contains(service)) {
                 bordingServices.remove(service);
                 GameInstance.Instance().addMoney(category * 5L);
@@ -697,7 +699,7 @@ public class Airplane extends Vehicle {
             fewRunwayExtra = 1000;
         }
         int extraServices = 0;
-        if (category > 2){
+        if (category > 2) {
             extraServices = 1000 * category;
         }
 

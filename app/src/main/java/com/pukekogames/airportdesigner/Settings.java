@@ -24,7 +24,7 @@ public class Settings {
         return ourInstance.game.getString(id);
     }
 
-    public float minZoom = 0.07f;
+    public float minZoom = 0.05f;
     public float maxZoom = 1f;
     public int ButtonWidth = 70;
     public int ButtonHeight = 40;

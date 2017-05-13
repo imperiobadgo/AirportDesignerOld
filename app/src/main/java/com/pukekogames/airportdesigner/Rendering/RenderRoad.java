@@ -19,9 +19,9 @@ public class RenderRoad {
     static int RUNWAYCOLOR = Color.rgb(139, 133, 133);
     static int STREETCOLOR = Color.rgb(157, 157, 157);
 
-    static float MINZOOMRUNWAY = 0.15f;
+    static float MINZOOMRUNWAY = 0.12f;
     static float MINZOOMTAXIWAY = 0.4f;
-    public static float MINZOOMROADMARKINGS = 0.12f;
+    public static float MINZOOMROADMARKINGS = 0.1f;
 
     static void render(Canvas canvas, Paint paint, Road road) {
         if (!Instance().isRoadInView(road)) {
@@ -121,14 +121,15 @@ public class RenderRoad {
         }
         float heading = runway.getHeading();
         if (length == 0) return;
+        float biggerFactor = 1.7f;
         if (bitmap != null) {
             int imageLength = bitmap.getWidth();
-            int imageHeight = bitmap.getHeight();
+            int imageHeight = (int) Math.round(bitmap.getHeight() * biggerFactor);
 
             runway.setDimension(imageLength, imageHeight);
             PointInt renderCenter = Render.getPositionForRender((int) runway.getCenterPosition().x, (int) runway.getCenterPosition().y);
             float scale = GameInstance.Settings().Zoom * GameInstance.Settings().Scale;
-
+//            scale *= 1.5;
 //            float scale = GameInstance.Settings().Scale;
 
 
@@ -142,14 +143,14 @@ public class RenderRoad {
                 if (i == imageCount - 1) {
 
                     float rotHead = (heading + 180) % 360;
-                    matrix.postScale(scaleX, scale);
+                    matrix.postScale(scaleX, scale * biggerFactor);
                     matrix.postTranslate(-length * scale / 2, -imageHeight * scale / 2f);
                     matrix.postRotate(rotHead);
                     matrix.postTranslate(renderCenter.x, renderCenter.y);
 
                 } else {
 
-                    matrix.postScale(scaleX, scale);
+                    matrix.postScale(scaleX, scale * biggerFactor);
                     matrix.postTranslate(-(length * scale / 2) + (i * scaleX * imageLength), -imageHeight * scale / 2f);
                     matrix.postRotate(heading);
                     matrix.postTranslate(renderCenter.x, renderCenter.y);
@@ -189,7 +190,7 @@ public class RenderRoad {
             }
 
         } else {
-            drawRoadLine(canvas, paint, runway, ratio, RUNWAYCOLOR);
+            drawRoadLine(canvas, paint, runway, ratio,biggerFactor,  RUNWAYCOLOR);
         }
 
         RoadIntersection usedIntersection = CommonMethods.getUsedRunwayIntersection(runway, GameInstance.Airport().getWindDirection());
@@ -228,6 +229,8 @@ public class RenderRoad {
 
         if (length == 0) return;
         PointInt renderCenter = Render.getPositionForRender((int) parkGate.getCenterPosition().x, (int) parkGate.getCenterPosition().y);
+        float biggerFactor = 1.0f;
+//        float biggerFactor = 1.3f;
         if (bitmap != null) {
             int imageLength = bitmap.getWidth();
             int imageHeight = bitmap.getHeight();
@@ -237,11 +240,9 @@ public class RenderRoad {
             Instance().fillRoadImage(canvas, paint, renderCenter, parkGate);
 
 
-
         } else {
-            drawRoadLine(canvas, paint, parkGate, ratio, TAXIWAYCOLOR);
+            drawRoadLine(canvas, paint, parkGate, ratio, biggerFactor, TAXIWAYCOLOR);
         }
-
 
 
         if (GameInstance.Settings().DebugMode) {
@@ -250,8 +251,8 @@ public class RenderRoad {
             paint.setAlpha((int) (ratio * 255));
             paint.setTextSize(Settings.Instance().normalFontSize);
             canvas.drawText("" + parkGate.getVehiclesOnRoad().size(), renderCenter.x, renderCenter.y, paint);
-            if (parkGate.isConnectedRoadHasTerminal()){
-                paint.setColor(Color.rgb(255,255,0));
+            if (parkGate.isConnectedRoadHasTerminal()) {
+                paint.setColor(Color.rgb(255, 255, 0));
                 paint.setAlpha((int) (ratio * 255));
                 int size = 8;
                 canvas.drawRect(renderCenter.x - size, renderCenter.y - size, renderCenter.x + size, renderCenter.y + size, paint);
@@ -299,7 +300,7 @@ public class RenderRoad {
 //            }
 //
 //        } else {
-        drawRoadLine(canvas, paint, taxiway, ratio, TAXIWAYCOLOR);
+        drawRoadLine(canvas, paint, taxiway, ratio, 1.0f, TAXIWAYCOLOR);
 
         if (GameInstance.Settings().DebugMode) {
             paint.reset();
@@ -344,7 +345,7 @@ public class RenderRoad {
 //                canvas.drawText("" + street.getVehiclesOnRoad().size(), renderCenter.x, renderCenter.y, paint);
 //            }
 //        }
-        drawRoadLine(canvas, paint, street, ratio, STREETCOLOR);
+        drawRoadLine(canvas, paint, street, ratio, 1f, STREETCOLOR);
 
         if (GameInstance.Settings().DebugMode) {
             PointInt renderCenter = Render.getPositionForRender((int) street.getCenterPosition().x, (int) street.getCenterPosition().y);
@@ -427,14 +428,14 @@ public class RenderRoad {
         canvas.drawCircle(renderCenter.x, renderCenter.y, radius, paint);
     }
 
-    private static void drawRoadLine(Canvas canvas, Paint paint, Road road, float ratio, int color) {
+    private static void drawRoadLine(Canvas canvas, Paint paint, Road road, float ratio, float biggerFactor, int color) {
         PointInt startPoint = Render.getPositionForRender((int) road.getStartPosition().x, (int) road.getStartPosition().y);
         PointInt endPoint = Render.getPositionForRender((int) road.getEndPosition().x, (int) road.getEndPosition().y);
 
         float scale = GameInstance.Settings().Zoom * GameInstance.Settings().Scale;
 
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(400 * scale);
+        paint.setStrokeWidth(400 * scale * biggerFactor);
         paint.setColor(color);
         paint.setAlpha((int) (ratio * 255));
         canvas.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y, paint);

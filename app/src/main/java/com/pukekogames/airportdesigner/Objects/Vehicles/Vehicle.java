@@ -255,12 +255,12 @@ public abstract class Vehicle extends ClickableGameObject {
 
     void updateSearch() {
         RoadIntersection lastIntersection;
-        float calcSpeed = speed;
-        if (calcSpeed < 9) {
-            calcSpeed = 9;
-        }
-
-        if (toTarget.Length() < calcSpeed * 50) return;
+//        float calcSpeed = speed;
+//        if (calcSpeed < 9) {
+//            calcSpeed = 9;
+//        }
+//
+//        if (toTarget.Length() < calcSpeed * 50) return;
         if (sameDirectionAsRoad) {
             lastIntersection = currentRoad.getNext();
         } else {

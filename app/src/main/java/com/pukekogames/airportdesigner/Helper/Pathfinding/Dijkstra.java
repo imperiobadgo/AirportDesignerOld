@@ -173,6 +173,7 @@ public class Dijkstra implements Serializable {
     private void insertNextNode(RoadIntersection intersection, double newDistance) {
         if (nextNodes.size() == 0) {
             nextNodes.add(intersection);
+            return;
         }
         boolean added = false;
         for (int i = 0; i < nextNodes.size(); i++) {

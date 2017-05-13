@@ -621,6 +621,7 @@ public class GameScreen extends Screen {
                     break;
 
                 case parkGate:
+
                     boolean noTaxiwayForGate = true;
                     for (int j = 0; j < raodArray.length; j++) {
                         Road connectedRoad = raodArray[j];
@@ -628,7 +629,10 @@ public class GameScreen extends Screen {
                             noTaxiwayForGate = true;
                             break;
                         }
-                        if (connectedRoad instanceof Taxiway) {
+                        if (handler.buildRoad == null && connectedRoad instanceof Taxiway) {
+                            noTaxiwayForGate = false;
+                        }
+                        if (handler.buildRoad != null && connectedRoad instanceof Street){
                             noTaxiwayForGate = false;
                         }
                     }

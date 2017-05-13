@@ -240,7 +240,7 @@ public class BuildingHelper {
         for (int i = 0; i < GameInstance.Airport().getRoadCount(); i++) {
             Road road = GameInstance.Airport().getRoad(i);
             roadLine = new Line(road.getStartPosition(), road.getEndPosition());
-            PointFloat intersection = buildLine.getIntersectPoint(roadLine, snappedToOtherRoad);
+            PointFloat intersection = buildLine.getIntersectPoint(roadLine, snappedToOtherRoad || snappedToNearestIntersection);
             if (intersection != null) {
                 intersectPoints.add(intersection);
                 canBuild = false;
