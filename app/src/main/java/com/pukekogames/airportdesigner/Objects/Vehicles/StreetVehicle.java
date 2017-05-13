@@ -235,7 +235,7 @@ public abstract class StreetVehicle extends Vehicle {
 //        Math.sqrt(diffX * diffX + diffY * diffY) > 1000 &&
 
         if (toTarget.Length() < 200 && driveState != VehicleState.servicing) {
-            if (targetGate.isServicePosition(parkgateNumber) && driveState != VehicleState.drivingToDepot) {
+            if (targetGate.isServicePosition(parkgateNumber, this) && driveState != VehicleState.drivingToDepot) {
                 driveState = VehicleState.servicing;
                 serviceTime = getServiceTime();
 

@@ -19,11 +19,12 @@ public class ParkGate extends Road {
     private int waitBlock = 0;
     transient public ArrayList<AirplaneServices> connectedServices;
     private boolean connectedRoadHasTerminal;
-    private int vehiclesServices;
+    private ArrayList<StreetVehicle> vehiclesServicing;
 
 
     public ParkGate() {
         super();
+        vehiclesServicing = new ArrayList<>();
         setImageID(Images.indexParkGate);
     }
 
@@ -97,15 +98,15 @@ public class ParkGate extends Road {
     }
 
     public void addVehicle(StreetVehicle vehicle){
-        vehiclesServices++;
+        vehiclesServicing.add(vehicle);
     }
 
     public void removeVehicle(StreetVehicle vehicle){
-        vehiclesServices--;
+        vehiclesServicing.remove(vehicle);
     }
 
     public void resetVehiclesServicing(){
-        vehiclesServices = 0;
+        vehiclesServicing.clear();
     }
 
     public int getEntryNumber(){
@@ -116,9 +117,13 @@ public class ParkGate extends Road {
         return 6;
     }
 
-    public boolean isServicePosition(int number){
-        if (vehiclesServices > 1){
-            return number == 2;
+    public boolean isServicePosition(int number, StreetVehicle vehicle){
+        if (vehiclesServicing.size() > 0){
+            if (vehiclesServicing.get(0).equals(vehicle)){
+                return number == 5;
+            }else{
+                return number == 2;
+            }
         }else{
             return number == 5;
         }

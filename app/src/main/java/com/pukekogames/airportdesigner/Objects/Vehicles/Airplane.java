@@ -411,8 +411,24 @@ public class Airplane extends Vehicle {
     }
 
     private void addPossibleGates(ArrayList<RoadIntersection> returnList) {
-        for (ParkGate gate : GameInstance.Airport().getAllFreeGates(getPerformance().NeedingTerminal())) {
+        boolean needTerminal = getPerformance().NeedingTerminal();
+        //prefer parkGate according to performance
+        for (ParkGate gate : GameInstance.Airport().getAllFreeGates(needTerminal)) {
             returnList.add(gate.getNext());
+        }
+        if (returnList.size() == 0){
+            if (needTerminal){
+                //terminal needed but there are no parkGates with terminal, so get a parkGate without terminal
+                for (ParkGate gate : GameInstance.Airport().getAllFreeGates(false)) {
+                    returnList.add(gate.getNext());
+                }
+            }else{
+                //no terminal needed but there are no parkGates without terminal, so get a parkGate with terminal
+                for (ParkGate gate : GameInstance.Airport().getAllFreeGates(true)) {
+                    returnList.add(gate.getNext());
+                }
+            }
+
         }
     }
 
@@ -496,8 +512,20 @@ public class Airplane extends Vehicle {
     void setNeededServices() {
         neededServices.clear();
         neededServices.add(AirplaneServices.crew);
+        ParkGate gate = null;
+        if (currentRoad instanceof ParkGate) {
+            gate = (ParkGate) currentRoad;
+        }
+
         if (category > 1) {
-            neededServices.add(AirplaneServices.bus);
+            if (gate != null){
+                if (!gate.isConnectedRoadHasTerminal()){
+                    //just need bus service, if the parkGate has no terminal
+                    neededServices.add(AirplaneServices.bus);
+                }
+            }else{
+                neededServices.add(AirplaneServices.bus);
+            }
         }
         if (category > 2) {
             neededServices.add(AirplaneServices.tank);
@@ -510,7 +538,14 @@ public class Airplane extends Vehicle {
         }
 
         if (category > 2) {
-            bordingServices.add(AirplaneServices.bus);
+            if (gate != null){
+                if (!gate.isConnectedRoadHasTerminal()){
+                    //just need bus service, if the parkGate has no terminal
+                    neededServices.add(AirplaneServices.bus);
+                }
+            }else{
+                neededServices.add(AirplaneServices.bus);
+            }
             bordingServices.add(AirplaneServices.crew);
         }
     }

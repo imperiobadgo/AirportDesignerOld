@@ -505,7 +505,14 @@ public class Airport implements Serializable {
         if (freeGates.size() > 0) {
             gate = freeGates.get(rand.nextInt(freeGates.size()));
         } else if (!needTerminal) {
+            //no terminal needed but there are no parkGates without terminal, so get a parkGate with terminal
             freeGates = getAllFreeGates(true);
+            if (freeGates.size() > 0) {
+                gate = freeGates.get(rand.nextInt(freeGates.size()));
+            }
+        } else if (needTerminal){
+            //terminal needed but there are no parkGates with terminal, so get a parkGate without terminal
+            freeGates = getAllFreeGates(false);
             if (freeGates.size() > 0) {
                 gate = freeGates.get(rand.nextInt(freeGates.size()));
             }
