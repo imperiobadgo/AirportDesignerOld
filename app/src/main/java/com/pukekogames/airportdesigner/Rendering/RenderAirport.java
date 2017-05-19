@@ -15,6 +15,7 @@ import com.pukekogames.airportdesigner.Objects.Vehicles.Vehicle;
 import com.pukekogames.airportdesigner.Settings;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -157,15 +158,22 @@ public class RenderAirport {
 
         if (airport.getConnectionsMissing() != null && !airport.isGeneratingNewChecks()) {
             paint.reset();
-            try {
-                for (ConnectionMissing connectionMissing : airport.getConnectionsMissing()) {
-                    if (airport.isGeneratingNewChecks()) break;
-                    RoadIntersection roadIntersection = connectionMissing.getTarget();
-                    RenderRoadIntersection.drawPossibleSelection(canvas, paint, roadIntersection, true);
-                }
-            }catch(Exception e){
+            Iterator<ConnectionMissing> iter = airport.getConnectionsMissing().iterator();
 
+            while (iter.hasNext()){
+                ConnectionMissing connectionMissing = iter.next();
+                RoadIntersection roadIntersection = connectionMissing.getTarget();
+                RenderRoadIntersection.drawPossibleSelection(canvas, paint, roadIntersection, true);
             }
+//            try {
+//                for (ConnectionMissing connectionMissing : airport.getConnectionsMissing()) {
+//                    if (airport.isGeneratingNewChecks()) break;
+//                    RoadIntersection roadIntersection = connectionMissing.getTarget();
+//                    RenderRoadIntersection.drawPossibleSelection(canvas, paint, roadIntersection, true);
+//                }
+//            }catch(Exception e){
+//
+//            }
         }
 
 //        if (firstInit == 0) {

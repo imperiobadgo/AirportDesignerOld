@@ -24,6 +24,7 @@ import com.pukekogames.airportdesigner.Objects.Vehicles.VehicleData.AirplaneStat
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -328,7 +329,12 @@ public class Airport implements Serializable {
     private void updateConnectionCheck() {
         if (generatingNewChecks) return;
         ArrayList<ConnectionCheck> removeChecks = new ArrayList<>();//remove checks from connectionChecklist when search completed
-        for (ConnectionCheck check : connectionChecks) {
+
+        Iterator<ConnectionCheck> iter = connectionChecks.iterator();
+
+        while (iter.hasNext()){
+            ConnectionCheck check = iter.next();
+
             if (generatingNewChecks) break;
             Dijkstra search = check.getDijkstra();
             search.nextStep();
@@ -361,6 +367,7 @@ public class Airport implements Serializable {
                 }
             }
             if (generatingNewChecks) break;
+
         }
 
         for (ConnectionCheck removeCheck : removeChecks) {
