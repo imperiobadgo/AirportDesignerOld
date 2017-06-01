@@ -8,7 +8,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".Activities.Game"
+                android:name=".Activities.MainActivity"
                 android:label="@string/app_name"
                 android:screenOrientation="landscape">
             <intent-filter>
